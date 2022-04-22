@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Networking;
+using static ImageCropper;
 
 public class GridManager : MonoBehaviour {
   private static int rows = 4;
@@ -29,9 +31,100 @@ public class GridManager : MonoBehaviour {
   public Text scoreText;
   public GameObject[] tilePrefabs;
   public LayerMask backgroundLayer;
-	public float minSwipeDistance = 10.0f;
+  public float minSwipeDistance = 10.0f;
 
-  private enum State {
+    private IEnumerator ReplaceImage(string path)
+    {
+        var url = "file://" + path;
+        var unityWebRequestTexture = UnityWebRequestTexture.GetTexture(url);
+        //Debug.Log("ReplaceImage1:" + path);
+        yield return unityWebRequestTexture.SendWebRequest();
+        //Debug.Log("ReplaceImage2:" + path);
+        var texture = ((DownloadHandlerTexture)unityWebRequestTexture.downloadHandler).texture;
+        if (texture == null)
+        {
+            Debug.LogError("Failed to load texture url:" + url);
+        }
+        //裁剪图片
+        
+        ImageCropper.Instance.Show(texture, (bool result, Texture originalImage, Texture2D croppedImage) =>
+        {
+            // Destroy previously cropped texture (if any) to free memory
+           // Destroy(croppedImageHolder.texture, 5f);
+
+            // If screenshot was cropped successfully
+            if (result)
+            {
+                Sprite sprite = Sprite.Create(croppedImage, new Rect(0, 0, 100, 100), new Vector2(0.5f, 0.5f));
+                //sr.sprite = sprite;
+                //设置已经显示的tile
+                foreach (GameObject gameObject in tiles)
+                {
+                    Tile tile = gameObject.GetComponent<Tile>();
+                    if (tile.value == 2)
+                    {
+                        SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
+                        sr.sprite = sprite;
+                    }
+                }
+                // Assign cropped texture to the RawImage
+                // croppedImageHolder.enabled = true;
+                //croppedImageHolder.texture = croppedImage;
+
+               /* Vector2 size = croppedImageHolder.rectTransform.sizeDelta;
+                if (croppedImage.height <= croppedImage.width)
+                    size = new Vector2(400f, 400f * (croppedImage.height / (float)croppedImage.width));
+                else
+                    size = new Vector2(400f * (croppedImage.width / (float)croppedImage.height), 400f);
+                croppedImageHolder.rectTransform.sizeDelta = size;*/
+
+               // croppedImageSize.enabled = true;
+                //croppedImageSize.text = "Image size: " + croppedImage.width + ", " + croppedImage.height;
+            }
+            else
+            {
+                //croppedImageHolder.enabled = false;
+               // croppedImageSize.enabled = false;
+            }
+
+            // Destroy the screenshot as we no longer need it in this case
+            Destroy(texture);
+        },
+             settings: new ImageCropper.Settings()
+             {
+                 ovalSelection = false,//是否椭圆形
+                 autoZoomEnabled = true,//自动缩放合适的区域
+                 imageBackground = Color.clear, // transparent background
+                 selectionMinSize = new Vector2(100,100),
+                 selectionMaxSize = new Vector2(100, 100),
+                 selectionMinAspectRatio=0,
+                 selectionMaxAspectRatio=0
+
+             },
+             croppedImageResizePolicy: (ref int width, ref int height) =>
+             {
+                // uncomment lines below to save cropped image at half resolution
+                //width /= 2;
+                //height /= 2;
+            });
+        //Debug.Log("Success to load texture url:" + url);
+        //texture.Resize(100, 100);
+        //texture.Apply();
+        //将sprite显示在图片上
+        //GameObject obj = tilePrefabs[0];
+        //SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+        
+    }
+    [SerializeField]
+    private Kakera.Unimgpicker imagePicker;
+
+
+    public void OnPressShowPicker()
+    {
+        imagePicker.Show("Select Image", "unimgpicker");
+    }
+
+    private enum State {
     Loaded, 
     WaitingForInput, 
     CheckingMatches,
@@ -44,7 +137,12 @@ public class GridManager : MonoBehaviour {
   void Awake() {
     tiles = new List<GameObject>();
     state = State.Loaded;
-  }
+        imagePicker.Completed += (string path) =>
+        {
+            Debug.Log("OnComplete:" + path);
+            StartCoroutine(ReplaceImage(path));
+        };
+    }
 
   void Update() {
     if (state == State.GameOver) {
@@ -81,7 +179,11 @@ public class GridManager : MonoBehaviour {
 #if UNITY_ANDROID || UNITY_IOS || UNITY_WP8 || UNITY_WP8_1
 			if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
 				touchStartPosition = Input.GetTouch(0).position;
-			}
+            }
+            else
+            {
+                //return;
+            }
 			if(Input.GetTouch(0).phase == TouchPhase.Ended) {
 				Vector2 swipeDelta = (Input.GetTouch(0).position - touchStartPosition);
 				if(swipeDelta.magnitude < minSwipeDistance) {
@@ -419,6 +521,7 @@ public class GridManager : MonoBehaviour {
     scoreText.text = "0";
     state = State.Loaded;
   }
+
 
   private void UpgradeTile(GameObject toDestroy, Tile destroyTile, GameObject toUpgrade, Tile upgradeTile) {
     Vector3 toUpgradePosition = toUpgrade.transform.position;

@@ -31,6 +31,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
 public static class SimplePool {
 	
 	// You can avoid resizing of the Stack's internal array by
@@ -68,7 +69,9 @@ public static class SimplePool {
 			// strip out for more minimal code.
 			inactive = new Stack<GameObject>(initialQty);
 		}
-		
+		public void clear(){
+			inactive.Clear();
+		}
 		// Spawn an object from our pool
 		public GameObject Spawn(Vector3 pos, Quaternion rot) {
 			GameObject obj;
@@ -98,7 +101,6 @@ public static class SimplePool {
 					return Spawn(pos, rot);
 				}
 			}
-			// Debug.Log("pos:"+pos);
 			obj.transform.position = pos;
 			obj.transform.rotation = rot;
 			obj.SetActive(true);
@@ -131,7 +133,11 @@ public static class SimplePool {
 	
 	// All of our pools
 	static Dictionary< GameObject, Pool > pools;
-	
+	static public void Clear(){
+		foreach(Pool pool in pools.Values){
+			pool.clear();
+		}
+	}
 	/// <summary>
 	/// Init our dictionary.
 	/// </summary>
