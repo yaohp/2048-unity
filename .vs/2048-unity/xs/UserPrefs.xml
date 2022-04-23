@@ -1,0 +1,44 @@
+﻿<Properties StartupConfiguration="{AA6BF803-75C0-A298-3743-7C01088505CA}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GridManager.cs">
+    <Files>
+      <File FileName="Assets/Scripts/GridManager.cs" Line="81" Column="59" />
+      <File FileName="Assets/Scripts/Tile.cs" />
+      <File FileName="Assets/Scripts/SimplePool.cs" Line="81" Column="32" />
+      <File FileName="Assets/Scripts/Utils.cs" Line="60" Column="53" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="2048-unity" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Plugins" expanded="True">
+                <Node name="ImageCropper" expanded="True">
+                  <Node name="Scripts" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="Scripts" expanded="True">
+                <Node name="GridManager.cs" selected="True" />
+              </Node>
+              <Node name="Unimgpicker" expanded="True">
+                <Node name="Samples" expanded="True" />
+                <Node name="Scripts" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="Unity" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="bac2702f-0d53-4bae-860e-efb83fbee016" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

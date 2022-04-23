@@ -182,7 +182,7 @@ PlayerSettings:
   iPhoneStrippingLevel: 0
   iPhoneScriptCallOptimization: 0
   ForceInternetPermission: 0
-  ForceSDCardPermission: 0
+  ForceSDCardPermission: 1
   CreateWallpaper: 0
   APKExpansionFiles: 0
   keepLoadedShadersAlive: 0
@@ -938,7 +938,7 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: 821767da-1c26-4dc1-8efc-067b5f796dc1
+  cloudProjectId: eb6a9e0c-24fc-4a24-a2c3-d78cc0dcf61b
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: 2048

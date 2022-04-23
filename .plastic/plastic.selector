@@ -1,4 +1,4 @@
-repository "2048-unity-master@ssl://yhpppp@sh01-plasticscm.unity.cn:8787"
+repository "2048@yhp@cloud"
   path "/"
     br "/main"
     co "/main"

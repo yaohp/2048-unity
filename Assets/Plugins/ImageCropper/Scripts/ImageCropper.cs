@@ -846,10 +846,7 @@ public class ImageCropper : MonoBehaviour
 		}
 
 		m_imageHolder.anchoredPosition = finalPosition;
-		m_orientedImage.transform.localScale= new Vector2(100 / Mathf.Min(m_originalImageSize.x, m_originalImageSize.y), 100 / Mathf.Min(m_originalImageSize.x, m_originalImageSize.y));
 		m_imageHolder.localScale = finalScale;
-		Debug.Log("AutoZoom:zoomAmount:" + zoomAmount + "instantZoom:" + instantZoom + "finalScale:" + finalScale);
-		Debug.Log("m_originalImageSize:" + m_originalImageSize);
 		autoZoomCoroutine = null;
 	}
 
